@@ -1,7 +1,12 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" th:replace="~{fragments/layout :: layout (~{::body},'index')}">
+<html>
 
 <head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" />
+  <link rel="stylesheet" href="stylesheets/css.css">
   <title>
     Consumo de API The Meal DB
   </title>
@@ -9,29 +14,33 @@
 
 <body>
 
-  <h1>
+  <h1 class="text-center">
     Consumo de API The Meal DB
   </h1>
 
-  <div id="resultado">
+  <div class="row col-md-12 text-center">
+    <input type="text" id="buscarDados" placeholder="Digite busca..." title="Digite sua busca">
+    <button type="button" class="btn btn-primary btn-lg" id="btProcurarNome">Buscar por Nome</button>
+    <button type="button" class="btn btn-primary btn-lg" id="listarCategorias">Categorias Principais</button>
+  </div>
+  <br>
+  <div class="row col-md-12 text-center" id="resultado">
 
   </div>
 
   <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script type="text/javascript" src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+  <script type="text/javascript" src="js/api.js"></script>
   <script>
-    const api = {
-      dominio: 'https://www.themealdb.com/api/json/v1/1/',
-      buscaDados(metodo) {
-        $.ajax({
-          url: this.dominio + metodo,
-          dataType: 'json',
-          success: function (result) {
-            console.log(result);
-          }
-        });
-      }
-    };
+    $(function () {
+      $("#listarCategorias").click(function () {
+        api.listarCategoriasPrincipais();
+      });
 
+      $("#btProcurarNome").click(function () {
+        api.filtroPorNome($("#buscarDados").val());
+      });
+    });
   </script>
 </body>
 
