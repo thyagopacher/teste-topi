@@ -9,3 +9,12 @@
 #botoesAlfabeto {
   margin-bottom: 10px;
 }
+
+.text-white {
+  color: white;
+  cursor: pointer;
+}
+
+.fa-youtube {
+  color: red;
+}

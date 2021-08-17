@@ -6,6 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" />
+  <link rel="stylesheet" href="https://code.jquery.com/qunit/qunit-2.16.0.css">
   <link rel="stylesheet" href="stylesheets/css.css">
   <title>
     Consumo de API The Meal DB
@@ -23,45 +24,26 @@
   <br>
   <div class="row col-md-12 text-center">
     <input type="text" id="buscarDados" placeholder="Digite busca..." title="Digite sua busca">
-    <button type="button" class="btn btn-primary btn-lg" id="btProcurarNome">Buscar por Nome</button>
-    <button type="button" class="btn btn-primary btn-lg" id="listarCategorias">Categorias Principais</button>
+    <button type="button" class="btn btn-primary" id="btProcurarNome">Buscar por Nome</button>
+    <button type="button" class="btn btn-primary" id="listarCategorias">Categorias Principais</button>
+    <button type="button" class="btn btn-primary" id="mostrarTestesUnitarios">
+      Mostrar Testes Unitários
+    </button>
   </div>
   <br>
   <div class="row col-md-12 text-center" id="resultado">
 
   </div>
+  <!-- para os testes unitários -->
+  <div class="row col-md-12 hide" id="qunit"></div>
+  <div class="row col-md-12 hide" id="qunit-fixture"></div>
 
   <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
   <script type="text/javascript" src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+  <script type="text/javascript" src="https://code.jquery.com/qunit/qunit-2.16.0.js"></script>
   <script type="text/javascript" src="js/api.js"></script>
-  <script>
-    $(function () {
-      $("#listarCategorias").click(function () {
-        api.listarCategoriasPrincipais();
-      });
-
-      $("#btProcurarNome").click(function () {
-        api.filtroPorNome($("#buscarDados").val());
-      });
-
-      carregaAlfabeto();
-    });
-
-    function carregaAlfabeto() {
-      let htmlLista = '';
-      for (i = 9, alphabet = ''; ++i < 36;) {
-        let letraLocal = i.toString(36);
-        htmlLista += `
-          <button class="botaoAlfabetoListagem" letra="${letraLocal}" title="Lista começando em ${letraLocal}">${letraLocal}</button>
-        `;
-      }
-      $("#botoesAlfabeto").html(htmlLista);
-      $(".botaoAlfabetoListagem").click(function () {
-        let letra = $(this).attr('letra');
-        api.filtroPorPrimeiraLetra(letra);
-      });
-    }
-  </script>
+  <script type="text/javascript" src="js/main.js"></script>
+  <script type="text/javascript" src="js/testes-unitarios.js"></script>
 </body>
 
 </html>

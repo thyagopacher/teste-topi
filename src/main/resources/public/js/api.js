@@ -2,25 +2,26 @@
 
 const api = {
   dominio: 'https://www.themealdb.com/api/json/v1/1/',
-  buscaDados(metodo, tipo) {
+  estaVazio(valor) {
+    return valor === undefined || valor === null || valor === "";
+  },
+  buscaDados(metodo, tipo, eventoExtra) {
     $("#resultado").html('<div class="fa-3x"><i class="fas fa-spinner fa-spin"></i></div> ... Carregando');
     $.ajax({
       url: this.dominio + metodo,
       dataType: 'json',
       success: function (result) {
-        console.log(result);
-        if (tipo != "") {
-          api.iterator(result, tipo);
+        if (!api.estaVazio(tipo)) {
+          api.iterator(result, tipo, eventoExtra);
         }
       }
     });
   },
-  iterator(result, tipo) {
+  iterator(result, tipo, eventoExtra) {
     let htmlLinha = '';
     let vetor = api.resultadoFinal(result, tipo);
     $.each(vetor, function (i, item) {
-      console.log(item, i);
-      let id = nome = imagem = imgSrc = descricao = '';
+      let id = nome = nomeTxt = imagem = imgSrc = descricao = videoYoutube = '';
       if (tipo == "Category2") {
         tipo = "Category";
       }
@@ -28,11 +29,27 @@ const api = {
         id = item[`id${tipo}`];
       }
       if (item[`str${tipo}`] != undefined) {
-        nome = item[`str${tipo}`];
+        let nomeTxt = item[`str${tipo}`];
+        if (tipo == "Category") {
+          nome = `
+            <a class='listaNomeCategoria text-white' title='Clique para filtrar da categoria: ${nomeTxt}' nome='${nomeTxt}'>${nomeTxt}</a>
+          `;
+        } else {
+          nome = `
+            <a class='listaItem text-white' title='Clique para filtrar o item: ${nomeTxt}' idItem='${id}' nome='${nomeTxt}'>${nomeTxt}</a>
+          `;
+        }
       }
       if (item[`str${tipo}Thumb`] != undefined) {
         imagem = item[`str${tipo}Thumb`];
-        imgSrc = `<img src="${imagem}" alt="Imagem Categoria ${nome}"/>`;
+        imgSrc = `<img src="${imagem}" alt="Imagem Categoria ${nomeTxt}"/>`;
+      }
+      if (item['strYoutube'] != undefined) {
+        videoYoutube += `
+        <a class="btn btn-default" target="_blank" href="${item['strYoutube']}">
+          <i class="fab fa-youtube"></i>
+          Video Youtube
+        </a>`;
       }
       if (item[`str${tipo}Description`] != undefined && item[`str${tipo}Description`] != null && item[`str${tipo}Description`] != "") {
         descricao = item[`str${tipo}Description`];
@@ -52,14 +69,20 @@ const api = {
       htmlLinha += `
       <div class="col-sm-4">
         <div class="panel panel-primary">
-          <div class="panel-heading">${id} - ${nome}</div> 
-          <div class="panel-body">${imgSrc}</div>
+          <div class="panel-heading">ID: ${id} - Nome: ${nome}</div> 
+          <div class="panel-body">
+            ${imgSrc}<br>
+            ${videoYoutube}
+          </div>
           <div class="panel-footer">${descricao}</div>
         </div> 
       </div>
       `;
     });
     $("#resultado").html(htmlLinha);
+    if (eventoExtra != undefined && eventoExtra != null) {
+      eventoExtra();
+    }
   },
   resultadoFinal(result, tipo) {
     if (tipo == "Category") {
@@ -72,8 +95,8 @@ const api = {
       return result.meals;
     }
   },
-  listarCategoriasPrincipais() {
-    this.buscaDados('categories.php', 'Category');
+  listarCategoriasPrincipais(eventoExtra) {
+    this.buscaDados('categories.php', 'Category', eventoExtra);
   },
   listarCategorias() {
     this.buscaDados('list.php?c=list', 'Category2');
@@ -84,17 +107,20 @@ const api = {
   listarIngredientes() {
     this.buscaDados('list.php?i=list', 'Ingredient');
   },
+  filtroPorId(id) {
+    this.buscaDados(`lookup.php?i=${id}`, 'Meal');
+  },
   filtroPorNome(nome) {
-    this.buscaDados(`search.php?s=${nome}`, 'Meal');
+    this.buscaDados(`search.php?s=${nome}`, 'Meal', eventosLinkItem);
   },
   filtroPorPrimeiraLetra(letra) {
-    this.buscaDados(`search.php?f=${letra}`, 'Meal');
+    this.buscaDados(`search.php?f=${letra}`, 'Meal', eventosLinkItem);
   },
   filtroPorArea(area) {
     this.buscaDados(`filter.php?a=${area}`, 'Meal');
   },
   filtroPorCategoria(categoria) {
-    this.buscaDados(`filter.php?c=${categoria}`, 'Meal');
+    this.buscaDados(`filter.php?c=${categoria}`, 'Meal', eventosLinkItem);
   },
   filtroPorIngrediente(ingrediente) {
     this.buscaDados(`filter.php?i=${ingrediente}`, 'Meal');
