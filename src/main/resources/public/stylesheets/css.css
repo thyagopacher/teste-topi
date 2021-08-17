@@ -18,3 +18,7 @@
 .fa-youtube {
   color: red;
 }
+
+#qunit {
+  position: relative;
+}
