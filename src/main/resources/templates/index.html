@@ -17,7 +17,10 @@
   <h1 class="text-center">
     Consumo de API The Meal DB
   </h1>
+  <div id="botoesAlfabeto" class="row col-md-12 text-center">
 
+  </div>
+  <br>
   <div class="row col-md-12 text-center">
     <input type="text" id="buscarDados" placeholder="Digite busca..." title="Digite sua busca">
     <button type="button" class="btn btn-primary btn-lg" id="btProcurarNome">Buscar por Nome</button>
@@ -40,7 +43,24 @@
       $("#btProcurarNome").click(function () {
         api.filtroPorNome($("#buscarDados").val());
       });
+
+      carregaAlfabeto();
     });
+
+    function carregaAlfabeto() {
+      let htmlLista = '';
+      for (i = 9, alphabet = ''; ++i < 36;) {
+        let letraLocal = i.toString(36);
+        htmlLista += `
+          <button class="botaoAlfabetoListagem" letra="${letraLocal}" title="Lista começando em ${letraLocal}">${letraLocal}</button>
+        `;
+      }
+      $("#botoesAlfabeto").html(htmlLista);
+      $(".botaoAlfabetoListagem").click(function () {
+        let letra = $(this).attr('letra');
+        api.filtroPorPrimeiraLetra(letra);
+      });
+    }
   </script>
 </body>
 
