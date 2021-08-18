@@ -1,9 +1,15 @@
 <!DOCTYPE html>
+<html>
 
-<html xmlns:th="http://www.thymeleaf.org" th:replace="~{fragments/layout :: layout (~{::body},'error')}">
+<head>
+  <title>
+    ERRO
+  </title>
+</head>
 
-  <body>
-    <p th:text="${message}">Exception message</p>
-  </body>
+<body>
+  <h1>Ocorreu um erro ao processar a requisição...</h1>
+  <p th:text="${message}">Exception message</p>
+</body>
 
 </html>

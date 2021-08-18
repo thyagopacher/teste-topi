@@ -1,7 +1,7 @@
 
 
 const api = {
-  dominio: 'https://www.themealdb.com/api/json/v1/1/',
+  dominio: '/',
   estaVazio(valor) {
     return valor === undefined || valor === null || valor === "";
   },
@@ -96,33 +96,33 @@ const api = {
     }
   },
   listarCategoriasPrincipais(eventoExtra) {
-    this.buscaDados('categories.php', 'Category', eventoExtra);
+    this.buscaDados('categorias', 'Category', eventoExtra);
   },
   listarCategorias() {
-    this.buscaDados('list.php?c=list', 'Category2');
+    this.buscaDados('todas-categorias', 'Category2');
   },
   listarAreas() {
-    this.buscaDados('list.php?a=list', 'Area');
+    this.buscaDados('areas', 'Area');
   },
   listarIngredientes() {
-    this.buscaDados('list.php?i=list', 'Ingredient');
+    this.buscaDados('ingredientes', 'Ingredient');
   },
   filtroPorId(id) {
-    this.buscaDados(`lookup.php?i=${id}`, 'Meal');
+    this.buscaDados(`filtro-por-id/${id}`, 'Meal');
   },
   filtroPorNome(nome) {
-    this.buscaDados(`search.php?s=${nome}`, 'Meal', eventosLinkItem);
+    this.buscaDados(`filtro-por-nome/${nome}`, 'Meal', eventosLinkItem);
   },
   filtroPorPrimeiraLetra(letra) {
-    this.buscaDados(`search.php?f=${letra}`, 'Meal', eventosLinkItem);
+    this.buscaDados(`filtro-por-primeira-letra/${letra}`, 'Meal', eventosLinkItem);
   },
   filtroPorArea(area) {
-    this.buscaDados(`filter.php?a=${area}`, 'Meal');
+    this.buscaDados(`filtro-por-area/${area}`, 'Meal');
   },
   filtroPorCategoria(categoria) {
-    this.buscaDados(`filter.php?c=${categoria}`, 'Meal', eventosLinkItem);
+    this.buscaDados(`filtro-por-categoria/${categoria}`, 'Meal', eventosLinkItem);
   },
   filtroPorIngrediente(ingrediente) {
-    this.buscaDados(`filter.php?i=${ingrediente}`, 'Meal');
+    this.buscaDados(`filtro-por-ingrediente/${ingrediente}`, 'Meal');
   }
 };
